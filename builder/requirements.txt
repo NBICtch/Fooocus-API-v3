@@ -1,0 +1,36 @@
+# Required Python packages get listed here, one per line.
+# Reccomended to lock the version number to avoid unexpected changes.
+
+# Custom dependencies
+requests-toolbelt==1.0.0
+runpod==1.6.2
+
+# Pulled from https://github.com/konieshadow/Fooocus-API/blob/main/requirements.txt
+torchsde==0.2.6
+einops==0.4.1
+transformers==4.30.2
+safetensors==0.3.1
+accelerate==0.21.0
+pyyaml==6.0
+Pillow==9.4.0
+scipy==1.9.3
+tqdm==4.64.1
+psutil==5.9.5
+pytorch_lightning==1.9.4
+omegaconf==2.2.3
+pygit2==1.12.2
+opencv-contrib-python==4.8.0.74
+onnxruntime==1.16.3
+timm==0.9.2
+fastapi>=0.103.1
+pydantic==2.4.2
+pydantic_core==2.10.1
+python-multipart==0.0.6
+uvicorn[standard]==0.23.2
+colorlog
+requests
+numpy
+sqlalchemy
+packaging
+rich
+chardet
