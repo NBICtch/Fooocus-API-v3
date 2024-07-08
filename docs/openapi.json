@@ -1710,7 +1710,7 @@
           "base_model_name": {
             "type": "string",
             "title": "Base Model Name",
-            "default": "juggernautXL_v8Rundiffusion.safetensors"
+            "default": "OpenDalle.safetensors"
           },
           "refiner_model_name": {
             "type": "string",
@@ -2073,7 +2073,7 @@
           "base_model_name": {
             "type": "string",
             "title": "Base Model Name",
-            "default": "juggernautXL_v8Rundiffusion.safetensors"
+            "default": "OpenDalle.safetensors"
           },
           "refiner_model_name": {
             "type": "string",
@@ -2230,7 +2230,7 @@
             "type": "string",
             "title": "Base Model Name",
             "description": "checkpoint file name",
-            "default": "juggernautXL_v8Rundiffusion.safetensors"
+            "default": "OpenDalle.safetensors"
           },
           "refiner_model_name": {
             "type": "string",
@@ -2365,7 +2365,7 @@
           "base_model_name": {
             "type": "string",
             "title": "Base Model Name",
-            "default": "juggernautXL_v8Rundiffusion.safetensors"
+            "default": "OpenDalle.safetensors"
           },
           "refiner_model_name": {
             "type": "string",
@@ -2784,7 +2784,7 @@
           "base_model_name": {
             "type": "string",
             "title": "Base Model Name",
-            "default": "juggernautXL_v8Rundiffusion.safetensors"
+            "default": "OpenDalle.safetensors"
           },
           "refiner_model_name": {
             "type": "string",
@@ -3097,7 +3097,7 @@
           "base_model_name": {
             "type": "string",
             "title": "Base Model Name",
-            "default": "juggernautXL_v8Rundiffusion.safetensors"
+            "default": "OpenDalle.safetensors"
           },
           "refiner_model_name": {
             "type": "string",
@@ -3416,7 +3416,7 @@
           "base_model_name": {
             "type": "string",
             "title": "Base Model Name",
-            "default": "juggernautXL_v8Rundiffusion.safetensors"
+            "default": "OpenDalle.safetensors"
           },
           "refiner_model_name": {
             "type": "string",
@@ -3816,7 +3816,7 @@
           "base_model_name": {
             "type": "string",
             "title": "Base Model Name",
-            "default": "juggernautXL_v8Rundiffusion.safetensors"
+            "default": "OpenDalle.safetensors"
           },
           "refiner_model_name": {
             "type": "string",
