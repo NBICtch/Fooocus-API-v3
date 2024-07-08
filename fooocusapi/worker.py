@@ -26,6 +26,8 @@ from fooocusapi.task_queue import (
     TaskOutputs
 )
 
+from inswapper.swapper import *
+
 patch_all()
 
 worker_queue: TaskQueue | None = None
@@ -80,6 +82,9 @@ def blocking_get_task_result(job_id: str) -> List[ImageGenerationResult]:
 @torch.inference_mode()
 def process_generate(async_task: QueueTask):
     """Generate image"""
+    # Ardha
+    user_face = None
+    # Stop
     try:
         import modules.default_pipeline as pipeline
     except Exception as e:
@@ -882,6 +887,9 @@ def process_generate(async_task: QueueTask):
                     return
             for task in cn_tasks[flags.cn_ip_face]:
                 cn_img, cn_stop, cn_weight = task
+                # Ardha
+                user_face = cn_img
+                # Stop
                 cn_img = HWC3(cn_img)
 
                 if not skipping_cn_preprocessor:
@@ -1008,9 +1016,29 @@ def process_generate(async_task: QueueTask):
                 if inpaint_worker.current_task is not None:
                     imgs = [inpaint_worker.current_task.post_process(x) for x in imgs]
 
-                # Fooocus async_worker.py code end
+                # Added By Ardha
+                face_swap_results = []
+                if user_face is not None:
+                    for img in imgs:
 
-                results += imgs
+                        face_swap_result = face_swap(
+                            source_imgs=[user_face],
+                            target_img=img,
+                            source_indexes="-1",
+                            target_indexes="-1",
+                            face_restore=True,
+                            background_enhance=True,
+                            face_upsample=True,
+                            upscale=1,
+                            codeformer_fidelity=0.5
+                        )
+                        face_swap_results.append(face_swap_result)
+                    results += face_swap_results
+
+                else:
+                    results += imgs
+                # Stop
+
             except model_management.InterruptProcessingException as e:
                 logger.std_warn("[Fooocus] User stopped")
                 results = []
