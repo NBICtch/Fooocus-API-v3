@@ -1,0 +1,6 @@
+[submodule "CodeFormer"]
+	path = CodeFormer
+	url = https://github.com/NBICtch/CodeFormer.git
+[submodule "inswapper"]
+	path = inswapper
+	url = https://github.com/NBICtch/inswapper
