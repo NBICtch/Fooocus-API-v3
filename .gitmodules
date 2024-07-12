@@ -1,6 +1,0 @@
-[submodule "CodeFormer"]
-	path = CodeFormer
-	url = https://github.com/NBICtch/Fooocus-API-v3.git
-[submodule "inswapper"]
-	path = inswapper
-	url = https://github.com/NBICtch/Fooocus-API-v3.git
