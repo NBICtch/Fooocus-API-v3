@@ -1,15 +1,35 @@
-FROM pytorch/pytorch:2.1.0-cuda12.1-cudnn8-runtime
+# Base image
+FROM runpod/pytorch:2.2.1-py3.10-cuda12.1.1-devel-ubuntu22.04
 
-ENV TZ=Asia/Shanghai
+ENV DEBIAN_FRONTEND=noninteractive \
+    PIP_PREFER_BINARY=1 \
+    PYTHONUNBUFFERED=1
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-WORKDIR /app
+# Set the working directory
+WORKDIR /
 
-COPY . /app
+# Update and upgrade the system packages
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt install -y \
+    fonts-dejavu-core rsync git jq moreutils aria2 wget libgoogle-perftools-dev procps && \
+    apt-get autoremove -y && rm -rf /var/lib/apt/lists/* && apt-get clean -y
 
-RUN pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies
+COPY builder/requirements.txt /requirements.txt
+RUN pip install --upgrade pip && \
+    pip install --upgrade -r /requirements.txt --no-cache-dir && \
+    rm /requirements.txt
 
-RUN pip install --no-cache-dir opencv-python-headless -i https://pypi.org/simple
+# Cleanup
+RUN apt-get autoremove -y && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/*
 
-EXPOSE 8888
+# Remove the empty workspace directory, link to runpod network volume
+RUN rm -rf /workspace && \
+    ln -s /runpod-volume /workspace
 
-CMD ["python", "main.py", "--host", "0.0.0.0", "--port", "8888", "--skip-pip"]
+ADD src .
+RUN chmod +x /start.sh
