@@ -32,4 +32,5 @@ RUN rm -rf /workspace && \
     ln -s /runpod-volume /workspace
 
 ADD src .
+RUN sed -i -e 's/\r$//' /start.sh
 RUN chmod +x /start.sh
