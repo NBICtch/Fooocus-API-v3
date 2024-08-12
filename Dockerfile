@@ -14,6 +14,7 @@ RUN apt-get update && \
     apt-get upgrade -y && \
     apt install -y \
     fonts-dejavu-core rsync git jq moreutils aria2 wget libgoogle-perftools-dev procps && \
+    apt-get install -y nvidia-container-toolkit && \
     apt-get autoremove -y && rm -rf /var/lib/apt/lists/* && apt-get clean -y
 
 # Install Python dependencies
