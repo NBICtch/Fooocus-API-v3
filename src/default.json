@@ -1,5 +1,5 @@
 {
-    "default_model": "OpenDalle.safetensors",
+    "default_model": "OpenDalleV1.1.safetensors",
     "default_refiner": "None",
     "default_refiner_switch": 0.5,
     "default_loras": [

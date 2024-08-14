@@ -1017,26 +1017,26 @@ def process_generate(async_task: QueueTask):
                     imgs = [inpaint_worker.current_task.post_process(x) for x in imgs]
 
                 # Added By Ardha
-                # face_swap_results = []
-                # if user_face is not None:
-                #     for img in imgs:
+                face_swap_results = []
+                if user_face is not None:
+                    for img in imgs:
 
-                #         face_swap_result = face_swap(
-                #             source_imgs=[user_face],
-                #             target_img=img,
-                #             source_indexes="-1",
-                #             target_indexes="-1",
-                #             face_restore=True,
-                #             background_enhance=True,
-                #             face_upsample=True,
-                #             upscale=1,
-                #             codeformer_fidelity=0.5
-                #         )
-                #         face_swap_results.append(face_swap_result)
-                #     results += face_swap_results
+                        face_swap_result = face_swap(
+                            source_imgs=[user_face],
+                            target_img=img,
+                            source_indexes="-1",
+                            target_indexes="-1",
+                            face_restore=True,
+                            background_enhance=True,
+                            face_upsample=True,
+                            upscale=1,
+                            codeformer_fidelity=0.5
+                        )
+                        face_swap_results.append(face_swap_result)
+                    results += face_swap_results
 
-                # else:
-                results += imgs
+                else:
+                    results += imgs
                 # Stop
 
             except model_management.InterruptProcessingException as e:
