@@ -264,7 +264,7 @@ temp_path_cleanup_on_launch = get_config_item_or_set_default(
 )
 default_base_model_name = default_model = get_config_item_or_set_default(
     key='default_model',
-    default_value='model.safetensors',
+    default_value='OpenDalleV1.1.safetensors',
     validator=lambda x: isinstance(x, str),
     expected_type=str
 )
