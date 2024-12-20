@@ -27,6 +27,7 @@ class GenerationFinishReason(str, Enum):
     queue_is_full = 'QUEUE_IS_FULL'
     user_cancel = 'USER_CANCEL'
     error = 'ERROR'
+    face_swap_error = 'NO_FACE_FOUND'
 
 
 class ImageGenerationResult:

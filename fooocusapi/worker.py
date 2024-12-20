@@ -1034,7 +1034,6 @@ def process_generate(async_task: QueueTask):
                         )
                         face_swap_results.append(face_swap_result)
                     results += face_swap_results
-
                 else:
                     results += imgs
                 # Stop
@@ -1044,6 +1043,16 @@ def process_generate(async_task: QueueTask):
                 results = []
                 results.append(ImageGenerationResult(
                     im=None, seed=task['task_seed'], finish_reason=GenerationFinishReason.user_cancel))
+                async_task.set_result(results, True, str(e))
+                break
+            except IndexError as e:
+                logger.std_error("[Fooocus] List index out of range error - likely missing or invalid face in image")
+                logging.exception(e)
+                results = []
+                results.append(ImageGenerationResult(
+                    im=None, 
+                    seed=task['task_seed'], 
+                    finish_reason=GenerationFinishReason.face_swap_error))
                 async_task.set_result(results, True, str(e))
                 break
             except Exception as e:
