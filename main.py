@@ -116,7 +116,7 @@ def prepare_environments(args) -> bool:
         default.get_aspect_ratio_value(a) for a in config.available_aspect_ratios
     ]
 
-    download_models()
+    # download_models()
 
     # Init task queue
     from fooocusapi import worker
