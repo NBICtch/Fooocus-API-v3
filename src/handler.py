@@ -10,7 +10,7 @@ import json
 import runpod
 from requests.adapters import HTTPAdapter, Retry
 from requests_toolbelt import MultipartEncoder
-
+from runpod.serverless.utils import rp_upload
 sd_session = requests.Session()
 retries = Retry(total=10, backoff_factor=0.1, status_forcelist=[502, 503, 504])
 sd_session.mount('http://', HTTPAdapter(max_retries=retries))
@@ -206,6 +206,25 @@ def inpaint_preset(params):
     else: params["advanced_params"] = advanced_params
     return True
 
+# s3 uploader
+def upload_outputs(json_output,job_id,bucket):
+    updated_outputs = []
+    for item in json_output.get("output", []):
+        url = item.get("url")
+        if url and "/files/" in url:
+            # Extract relative file path from URL
+            relative_path = url.split("/files/")[-1]
+            local_path = os.path.join("/workspace/outputs/files", relative_path)
+
+            # Upload to RunPod storage
+            if os.path.exists(local_path):
+                uploaded_url = rp_upload.upload_image(local_path,job_id,bucket_name=bucket)
+                item["url"] = uploaded_url
+            else:
+                print(f"[WARN] File not found for upload: {local_path}")
+        updated_outputs.append(item)
+    json_output["output"] = updated_outputs
+    return json_output
 # ---------------------------------------------------------------------------- #
 #                                RunPod Handler                                #
 # ---------------------------------------------------------------------------- #
@@ -214,6 +233,8 @@ def handler(event):
     # Check for clear outputs option (defaults to True, send "clear_output":false in your payload to keep the images stored on the network volume.)
     # Also works on standalone but does not make much sense since the workers are stateless.
     clear_output = event["input"].get("clear_output", True)
+    job_id = event["id"]
+    uploadToS3 = event["input"].get("uploadToS3",False)
     if clear_output is True or clear_output.lower() == "true":
         clearOutput()
 
@@ -223,7 +244,9 @@ def handler(event):
     # Check for async preview streaming (turn on by adding "async_process":true in your generation params and include custom "preview_url":"https://your.app/endpoint")
     if 'preview_url' in event["input"] and 'job_step_preview' in json:
         preview_stream(json, event)
-    
+    BUCKET_NAME=os.getenv('BUCKET_NAME')
+    if os.environ.get("BUCKET_ENDPOINT_URL", False) and os.environ.get("BUCKET_ACCESS_KEY_ID", False) and os.environ.get("BUCKET_SECRET_ACCESS_KEY", False) and  uploadToS3:
+        json = upload_outputs(json,job_id,BUCKET_NAME)
     # Return the output that you want to be returned like pre-signed URLs to output artifacts
     return json
 
