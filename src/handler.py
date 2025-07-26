@@ -264,6 +264,8 @@ def upload_outputs(json_output, bucket):
             else:
                 print(f"[WARN] File not found: {local_path}")
 
+        response = s3.get_bucket_acl(Bucket=bucket)
+        print("ACL:",response['Grants'])
         updated_outputs.append(item)
 
     
