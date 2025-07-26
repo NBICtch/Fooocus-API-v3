@@ -10,7 +10,7 @@ import json
 import runpod
 from requests.adapters import HTTPAdapter, Retry
 from requests_toolbelt import MultipartEncoder
-# from runpod.serverless.utils import rp_upload
+from runpod.serverless.utils import rp_upload
 import boto3
 sd_session = requests.Session()
 retries = Retry(total=10, backoff_factor=0.1, status_forcelist=[502, 503, 504])
@@ -208,68 +208,68 @@ def inpaint_preset(params):
     return True
 
 # # s3 uploader
-# def upload_outputs(json_output,job_id,bucket):
-#     updated_outputs = []
-#     for item in json_output.get("output", []):
-#         url = item.get("url")
-#         if url and "/files/" in url:
-#             # Extract relative file path from URL
-#             relative_path = url.split("/files/")[-1]
-#             local_path = os.path.join("/workspace/outputs/files", relative_path)
-
-#             # Upload to RunPod storage
-#             if os.path.exists(local_path):
-#                 uploaded_url = rp_upload.upload_image(local_path,job_id,bucket_name=bucket)
-#                 item["url"] = uploaded_url
-#             else:
-#                 print(f"[WARN] File not found for upload: {local_path}")
-#         updated_outputs.append(item)
-#     json_output["output"] = updated_outputs
-#     return json_output
-def get_s3_client():
-    return boto3.client(
-        "s3",
-        endpoint_url=os.environ["BUCKET_ENDPOINT_URL"],
-        aws_access_key_id=os.environ["BUCKET_ACCESS_KEY_ID"],
-        aws_secret_access_key=os.environ["BUCKET_SECRET_ACCESS_KEY"],
-        region_name="EU-RO-1"
-    )
-
-def upload_outputs(json_output, bucket):
-    s3 = get_s3_client()
+def upload_outputs(json_output,job_id,bucket):
     updated_outputs = []
-
     for item in json_output:
         url = item.get("url")
         if url and "/files/" in url:
-            # Get path from Fooocus URL
+            # Extract relative file path from URL
             relative_path = url.split("/files/")[-1]
             local_path = os.path.join("/workspace/outputs/files", relative_path)
-            print("the local path is ",local_path)
-            print("the relative path is ",relative_path)
+
+            # Upload to RunPod storage
             if os.path.exists(local_path):
-                key = f"outputs/files/{relative_path}"
-                print("the key is ",key)
-                try:
-                    # Generate signed URL
-                    signed_url = s3.generate_presigned_url(
-                        'get_object',
-                        Params={'Bucket': bucket, 'Key': key},
-                        ExpiresIn=3600
-                    )
-                    item["url"] = signed_url
-
-                except Exception as e:
-                    print(f"[ERROR] Failed to upload or sign {local_path}: {e}")
+                uploaded_url = rp_upload.upload_image(local_path,job_id,bucket_name=bucket)
+                item["url"] = uploaded_url
             else:
-                print(f"[WARN] File not found: {local_path}")
-
-        response = s3.get_bucket_acl(Bucket=bucket)
-        print("ACL:",response['Grants'])
+                print(f"[WARN] File not found for upload: {local_path}")
         updated_outputs.append(item)
-
     
     return updated_outputs
+# def get_s3_client():
+#     return boto3.client(
+#         "s3",
+#         endpoint_url=os.environ["BUCKET_ENDPOINT_URL"],
+#         aws_access_key_id=os.environ["BUCKET_ACCESS_KEY_ID"],
+#         aws_secret_access_key=os.environ["BUCKET_SECRET_ACCESS_KEY"],
+#         region_name="EU-RO-1"
+#     )
+
+# def upload_outputs(json_output, bucket):
+#     s3 = get_s3_client()
+#     updated_outputs = []
+
+#     for item in json_output:
+#         url = item.get("url")
+#         if url and "/files/" in url:
+#             # Get path from Fooocus URL
+#             relative_path = url.split("/files/")[-1]
+#             local_path = os.path.join("/workspace/outputs/files", relative_path)
+#             print("the local path is ",local_path)
+#             print("the relative path is ",relative_path)
+#             if os.path.exists(local_path):
+#                 key = f"outputs/files/{relative_path}"
+#                 print("the key is ",key)
+#                 try:
+#                     # Generate signed URL
+#                     signed_url = s3.generate_presigned_url(
+#                         'get_object',
+#                         Params={'Bucket': bucket, 'Key': key},
+#                         ExpiresIn=3600
+#                     )
+#                     item["url"] = signed_url
+
+#                 except Exception as e:
+#                     print(f"[ERROR] Failed to upload or sign {local_path}: {e}")
+#             else:
+#                 print(f"[WARN] File not found: {local_path}")
+
+#         response = s3.get_bucket_acl(Bucket=bucket)
+#         print("ACL:",response['Grants'])
+#         updated_outputs.append(item)
+
+    
+#     return updated_outputs
 # ---------------------------------------------------------------------------- #
 #                                RunPod Handler                                #
 # ---------------------------------------------------------------------------- #
@@ -291,7 +291,7 @@ def handler(event):
         preview_stream(json, event)
     BUCKET_NAME=os.getenv('BUCKET_NAME')
     if os.environ.get("BUCKET_ENDPOINT_URL", False) and os.environ.get("BUCKET_ACCESS_KEY_ID", False) and os.environ.get("BUCKET_SECRET_ACCESS_KEY", False):
-        json = upload_outputs(json,BUCKET_NAME)
+        json = upload_outputs(json,job_id,BUCKET_NAME)
     # Return the output that you want to be returned like pre-signed URLs to output artifacts
     return json
 
