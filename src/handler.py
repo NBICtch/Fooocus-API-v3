@@ -245,13 +245,12 @@ def upload_outputs(json_output, job_id, bucket):
             # Get path from Fooocus URL
             relative_path = url.split("/files/")[-1]
             local_path = os.path.join("/workspace/outputs/files", relative_path)
-
+            print("the local path is ",local_path)
+            print("the relative path is ",relative_path)
             if os.path.exists(local_path):
                 key = f"{job_id}/{relative_path}"
-
+                print("the key is ",key)
                 try:
-                    s3.upload_file(local_path, bucket, key)
-
                     # Generate signed URL
                     signed_url = s3.generate_presigned_url(
                         'get_object',
@@ -267,7 +266,7 @@ def upload_outputs(json_output, job_id, bucket):
 
         updated_outputs.append(item)
 
-
+    
     return updated_outputs
 # ---------------------------------------------------------------------------- #
 #                                RunPod Handler                                #
