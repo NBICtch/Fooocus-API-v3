@@ -7,4 +7,4 @@ python ../main.py --skip-pip --disable-in-browser --always-gpu --disable-offload
 
 echo "Starting RunPod Handler"
 
-python -u handler.py
+python -u ./handler.py
