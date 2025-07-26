@@ -235,7 +235,7 @@ def get_s3_client():
         region_name="EU-RO-1"
     )
 
-def upload_outputs(json_output, job_id, bucket):
+def upload_outputs(json_output, bucket):
     s3 = get_s3_client()
     updated_outputs = []
 
@@ -248,7 +248,7 @@ def upload_outputs(json_output, job_id, bucket):
             print("the local path is ",local_path)
             print("the relative path is ",relative_path)
             if os.path.exists(local_path):
-                key = f"{job_id}/{relative_path}"
+                key = f"outputs/files/{relative_path}"
                 print("the key is ",key)
                 try:
                     # Generate signed URL
@@ -289,7 +289,7 @@ def handler(event):
         preview_stream(json, event)
     BUCKET_NAME=os.getenv('BUCKET_NAME')
     if os.environ.get("BUCKET_ENDPOINT_URL", False) and os.environ.get("BUCKET_ACCESS_KEY_ID", False) and os.environ.get("BUCKET_SECRET_ACCESS_KEY", False):
-        json = upload_outputs(json,job_id,BUCKET_NAME)
+        json = upload_outputs(json,BUCKET_NAME)
     # Return the output that you want to be returned like pre-signed URLs to output artifacts
     return json
 
