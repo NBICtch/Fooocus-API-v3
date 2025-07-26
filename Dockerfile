@@ -64,6 +64,8 @@ RUN rm -rf /workspace && \
 #     curl -o repositories/Fooocus/models/loras/sdxl_hyper_sd_4step_lora.safetensors -L https://huggingface.co/3WaD/RunPod-Fooocus-API/resolve/main/v0.3.30/sdxl_hyper_sd_4step_lora.safetensors?download=true && echo "25/26" && \
 #     curl -o repositories/Fooocus/models/safety_checker/stable-diffusion-safety-checker.bin -L https://huggingface.co/3WaD/RunPod-Fooocus-API/resolve/main/v0.3.30/stable-diffusion-safety-checker.bin?download=true && echo "26/26"
 
-RUN chmod +x start.sh
+ADD src .
+RUN sed -i -e 's/\r$//' /start.sh
+RUN chmod +x /start.sh
 # RUN ls
 # CMD ["./start.sh"]
