@@ -6,5 +6,5 @@ echo "Starting Fooocus API"
 python ../main.py --skip-pip --disable-in-browser --always-gpu --disable-offload-from-vram & # You can add more Fooocus flags here to optimize performance for your workers, see https://github.com/lllyasviel/Fooocus?tab=readme-ov-file#all-cmd-flags
 
 echo "Starting RunPod Handler"
-
-python -u ./handler.py
+cd "$(dirname "$0")"
+python -u handler.py
