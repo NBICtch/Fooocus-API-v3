@@ -215,11 +215,11 @@ def upload_outputs(json_output,job_id,bucket):
         if url and "/files/" in url:
             # Extract relative file path from URL
             relative_path = url.split("/files/")[-1]
-            local_path = os.path.join("/runpod-volume/outputs/files", relative_path)
+            local_path = os.path.join("/workspace/outputs/files", relative_path)
 
             # Upload to RunPod storage
             if os.path.exists(local_path):
-                uploaded_url = rp_upload.upload_image(local_path,bucket_name=bucket)
+                uploaded_url = rp_upload.upload_image(local_path,job_id,bucket_name=bucket)
                 item["url"] = uploaded_url
             else:
                 print(f"[WARN] File not found for upload: {local_path}")
