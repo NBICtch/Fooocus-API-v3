@@ -62,4 +62,5 @@ RUN curl -o repositories/Fooocus/models/checkpoints/juggernautXL_v8Rundiffusion.
     curl -o repositories/Fooocus/models/safety_checker/stable-diffusion-safety-checker.bin -L https://huggingface.co/3WaD/RunPod-Fooocus-API/resolve/main/v0.3.30/stable-diffusion-safety-checker.bin?download=true && echo "26/26"
 RUN sed -i -e 's/\r$//' src/start.sh
 RUN chmod +x src/start.sh
+RUN ls
 CMD ["src/start.sh"]
