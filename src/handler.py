@@ -231,7 +231,8 @@ def get_s3_client():
         "s3",
         endpoint_url=os.environ["BUCKET_ENDPOINT_URL"],
         aws_access_key_id=os.environ["BUCKET_ACCESS_KEY_ID"],
-        aws_secret_access_key=os.environ["BUCKET_SECRET_ACCESS_KEY"]
+        aws_secret_access_key=os.environ["BUCKET_SECRET_ACCESS_KEY"],
+        region_name="EU-RO-1"
     )
 
 def upload_outputs(json_output, job_id, bucket):
