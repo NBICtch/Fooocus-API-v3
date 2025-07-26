@@ -238,7 +238,7 @@ def upload_outputs(json_output, job_id, bucket):
     s3 = get_s3_client()
     updated_outputs = []
 
-    for item in json_output.get("output", []):
+    for item in json_output:
         url = item.get("url")
         if url and "/files/" in url:
             # Get path from Fooocus URL
@@ -266,8 +266,8 @@ def upload_outputs(json_output, job_id, bucket):
 
         updated_outputs.append(item)
 
-    json_output["output"] = updated_outputs
-    return json_output
+
+    return updated_outputs
 # ---------------------------------------------------------------------------- #
 #                                RunPod Handler                                #
 # ---------------------------------------------------------------------------- #
