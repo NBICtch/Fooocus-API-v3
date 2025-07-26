@@ -37,7 +37,7 @@ RUN mv /workspace/src/* /workspace/ && rm -rf /workspace/src
 WORKDIR /workspace
 RUN echo "Downloading models..."
 RUN curl -o repositories/Fooocus/models/checkpoints/juggernautXL_v8Rundiffusion.safetensors -L https://huggingface.co/lllyasviel/fav_models/resolve/main/fav/juggernautXL_v8Rundiffusion.safetensors?download=true && echo "1/26" \
-    curl -o repositories/Fooocus/models/checkpoints/OpenDalleV1.1.safetensors -L https://huggingface.co/dataautogpt3/OpenDalleV1.1/resolve/main/OpenDalleV1.1.safetensors?download=true && echo "Extra model" \
+    curl -o repositories/Fooocus/models/checkpoints/OpenDalleV1.1.safetensors -L https://huggingface.co/dataautogpt3/OpenDalleV1.1/resolve/main/OpenDalleV1.1.safetensors && echo "Extra model" \
     curl -o repositories/Fooocus/models/loras/sd_xl_offset_example-lora_1.0.safetensors -L https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_offset_example-lora_1.0.safetensors?download=true && echo "2/26" \
     curl -o repositories/Fooocus/models/loras/sdxl_lcm_lora.safetensors -L https://huggingface.co/3WaD/RunPod-Fooocus-API/resolve/main/v0.3.30/sdxl_lcm_lora.safetensors?download=true && echo "3/26" \
     curl -o repositories/Fooocus/models/inpaint/fooocus_inpaint_head.pth -L https://huggingface.co/3WaD/RunPod-Fooocus-API/resolve/main/v0.3.30/fooocus_inpaint_head.pth?download=true && echo "4/26" \
@@ -66,4 +66,4 @@ RUN curl -o repositories/Fooocus/models/checkpoints/juggernautXL_v8Rundiffusion.
 
 RUN chmod +x start.sh
 RUN ls
-CMD ["/start.sh"]
+CMD ["./start.sh"]
