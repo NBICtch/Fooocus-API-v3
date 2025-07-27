@@ -219,6 +219,7 @@ def upload_outputs(json_output,job_id,bucket):
 
             # Upload to RunPod storage
             if os.path.exists(local_path):
+                print("the local path is ",local_path)
                 uploaded_url = rp_upload.upload_image(local_path,job_id,bucket_name=bucket)
                 item["url"] = uploaded_url
             else:
