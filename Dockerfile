@@ -28,9 +28,9 @@ RUN apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
 
-# Remove the empty workspace directory, link to runpod network volume
-RUN rm -rf /workspace && \
-    ln -s /runpod-volume /workspace
+# # Remove the empty workspace directory, link to runpod network volume
+# RUN rm -rf /workspace && \
+#     ln -s /runpod-volume /workspace
 # Copy all source (with submodules)
 # COPY . ./workspace/
 # RUN mv /workspace/src/* /workspace/ && rm -rf /workspace/src
@@ -65,8 +65,8 @@ RUN rm -rf /workspace && \
 #     curl -o repositories/Fooocus/models/safety_checker/stable-diffusion-safety-checker.bin -L https://huggingface.co/3WaD/RunPod-Fooocus-API/resolve/main/v0.3.30/stable-diffusion-safety-checker.bin?download=true && echo "26/26"
 
 # ADD src/* .
-ADD ./ /workspace/
-WORKDIR /workspace
+COPY . /runpod-volume/
+WORKDIR /runpod-volume
 
 
 RUN sed -i -e 's/\r$//' src/start.sh
