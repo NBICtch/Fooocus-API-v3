@@ -72,4 +72,4 @@ WORKDIR /runpod-volume
 RUN sed -i -e 's/\r$//' src/start.sh
 RUN chmod +x src/start.sh
 # RUN ls
-# CMD ["./start.sh"]
+CMD ["./src/start.sh"]
